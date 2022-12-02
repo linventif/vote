@@ -27,8 +27,8 @@ else
 end
 
 local function notif(msg)
-    print(msg)
-    chat.AddText(Color(204, 40, 103), "Vote Systeme | ", Color(255, 255, 255), msg)
+    print("Vote System | " .. msg)
+    chat.AddText(Color(204, 40, 103), "Vote System | ", Color(255, 255, 255), msg)
 end
 
 hook.Add("OnPlayerChat", "Vote", function(ply, text, team)
