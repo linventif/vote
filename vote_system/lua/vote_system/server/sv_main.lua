@@ -6,10 +6,15 @@ local plys_info = {
     ["inwaitnb"] = 0
 }
 
-local function notif(id, ply)
+local function NetToPly(id, ply, data)
     net.Start("VoteSys")
-    net.WriteInt(id, 8)
-    net.Send(ply)
+    net.WriteString(id)
+    net.WriteString(data)
+    if ply == "all" then
+        net.Broadcast()
+    else
+        net.Send(ply)
+    end
 end
 
 net.Receive("VoteSys", function(len, ply)
@@ -25,11 +30,14 @@ timer.Create("RefreshVoteList", VoteSys.Config.RefreshTime, 0, function()
                 ply:addMoney(VoteSys.Config.Money)
                 plys_info.inwait[ply] = nil
                 plys_info.incooldown[ply] = true
-                notif(4, ply)
+                if VoteSys.Config.ShowVotes then
+                    NetToPly("notif-vote", "all", ply:Nick())
+                end
+                NetToPly("notif", ply, 4)
             elseif plys_info.incooldown[ply] then
-                notif(3, ply)
+                NetToPly("notif", ply, 3)
             else
-                notif(6, ply)
+                NetToPly("notif", ply, 6)
             end
         end)
         plys_info.inwait[ply] = nil
