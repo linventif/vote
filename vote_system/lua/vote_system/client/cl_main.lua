@@ -53,7 +53,7 @@ hook.Add("OnPlayerChat", "Vote", function(ply, text, team)
         yes:SetFont("LinvFontRobo20")
         yes:SetTextColor(Color(255, 255, 255))
         yes.DoClick = function()
-            gui.OpenURL("https://top-serveurs.net/discord/vote/kaiiolla-city")
+            gui.OpenURL(VoteSys.Config.Url)
         end
         yes.Paint = function(self, w, h)
             draw.RoundedBox(6, 0, 0, w, h, Color(113, 113, 113))
