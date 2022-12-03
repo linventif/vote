@@ -31,8 +31,10 @@ local folder = "vote_system"
 local name = "Vote System"
 local full_name = "Vote System"
 local license = "CC BY-SA 4.0"
-local version = 1.0
+local version = "0.1.4"
+
 VoteSys = {}
+LinvLib.Install["vote-system"] = version
 
 // -- // -- // -- // -- // -- // -- // -- // -- // -- //
 // Print Console Informations
