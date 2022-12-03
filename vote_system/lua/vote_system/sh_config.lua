@@ -1,7 +1,7 @@
 VoteSys.Config = VoteSys.Config or {}
 
 if SERVER then
-    VoteSys.Config.Token = "" // Your API token from the website
+    VoteSys.Config.Token = "5MLBLK5K1Q" // Your API token from the website
 end
 
 VoteSys.Config.Language = "french" // english - french
@@ -12,12 +12,19 @@ VoteSys.Config.ShowOnJoin = true // Show the vote menu when a player joins
 VoteSys.Config.ShowVotes = true // Show the votes in the middle top of the screen
 VoteSys.Config.VoteSound = "UI/buttonclick.wav" // Sound played when a player votes (leave empty to disable)
 
-
-VoteSys.Config.Url = "https://top-serveurs.net/garrys-mod/linventif" // The url of the vote page
+VoteSys.Config.Url = "https://top-serveurs.net/discord/vote/kaiiolla-city" // The url of the vote page
 
 VoteSys.Config.Commands = { // Commands that players can use to vote
     ["/vote"] = true,
     ["!vote"] = true,
     ["!v"] = true,
     ["/v"] = true
+}
+
+VoteSys.Config.UI = { // Change the UI of the vote menu
+    ["Background"] = Color(51, 51, 51, 255), // Color of the background
+    ["Border"] = Color(113, 113, 113), // Color of the border
+    ["ButtonHover"] = Color(77, 77, 77), // Color of the button when the player hovers over it
+    ["TextColor"] = Color(255, 255, 255), // Color of the text
+    ["ChatName"] = Color(204, 40, 103) // Color of the addon name in the chat
 }
