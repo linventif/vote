@@ -54,24 +54,13 @@ local function OpenMenu()
     yes:SetFont("LinvFontRobo20")
     yes:SetTextColor(VoteSys.Config.UI["TextColor"])
     yes.DoClick = function()
-        gui.OpenURL(VoteSys.Config.Url)
+        gui.OpenURL(VoteSys.Config.Url .. "?pseudo=" .. LocalPlayer():Nick())
     end
     yes.Paint = function(self, w, h)
         draw.RoundedBox(6, 0, 0, w, h, VoteSys.Config.UI["Border"])
         draw.RoundedBox(6, 4, 4, w-8, h-8, VoteSys.Config.UI["Background"])
     end
-    yes.OnCursorEntered = function()
-        yes.Paint = function(self, w, h)
-            draw.RoundedBox(6, 0, 0, w, h, VoteSys.Config.UI["Border"])
-            draw.RoundedBox(6, 4, 4, w-8, h-8, VoteSys.Config.UI["ButtonHover"])
-        end
-    end
-    yes.OnCursorExited = function()
-        yes.Paint = function(self, w, h)
-            draw.RoundedBox(6, 0, 0, w, h, VoteSys.Config.UI["Border"])
-            draw.RoundedBox(6, 4, 4, w-8, h-8, VoteSys.Config.UI["Background"])
-        end
-    end
+    LinvLib.Hover(yes, 6, 4, VoteSys.Config.UI["Background"], VoteSys.Config.UI["ButtonHover"], VoteSys.Config.UI["Border"], VoteSys.Config.UI["Border"])
     local request = vgui.Create("DButton", frame)
     request:SetPos(600/2-60, 200)
     request:SetSize(120, 40)
@@ -87,18 +76,7 @@ local function OpenMenu()
         draw.RoundedBox(6, 0, 0, w, h, VoteSys.Config.UI["Border"])
         draw.RoundedBox(6, 4, 4, w-8, h-8, VoteSys.Config.UI["Background"])
     end
-    request.OnCursorEntered = function()
-        request.Paint = function(self, w, h)
-            draw.RoundedBox(6, 0, 0, w, h, VoteSys.Config.UI["Border"])
-            draw.RoundedBox(6, 4, 4, w-8, h-8, VoteSys.Config.UI["ButtonHover"])
-        end
-    end
-    request.OnCursorExited = function()
-        request.Paint = function(self, w, h)
-            draw.RoundedBox(6, 0, 0, w, h, VoteSys.Config.UI["Border"])
-            draw.RoundedBox(6, 4, 4, w-8, h-8, VoteSys.Config.UI["Background"])
-        end
-    end
+    LinvLib.Hover(request, 6, 4, VoteSys.Config.UI["Background"], VoteSys.Config.UI["ButtonHover"], VoteSys.Config.UI["Border"], VoteSys.Config.UI["Border"])
     local no = vgui.Create("DButton", frame)
     no:SetPos(600/2+110, 200)
     no:SetSize(100, 40)
@@ -112,18 +90,7 @@ local function OpenMenu()
         draw.RoundedBox(6, 0, 0, w, h, VoteSys.Config.UI["Border"])
         draw.RoundedBox(6, 4, 4, w-8, h-8, VoteSys.Config.UI["Background"])
     end
-    no.OnCursorEntered = function()
-        no.Paint = function(self, w, h)
-            draw.RoundedBox(6, 0, 0, w, h, VoteSys.Config.UI["Border"])
-            draw.RoundedBox(6, 4, 4, w-8, h-8, VoteSys.Config.UI["ButtonHover"])
-        end
-    end
-    no.OnCursorExited = function()
-        no.Paint = function(self, w, h)
-            draw.RoundedBox(6, 0, 0, w, h, VoteSys.Config.UI["Border"])
-            draw.RoundedBox(6, 4, 4, w-8, h-8, VoteSys.Config.UI["Background"])
-        end
-    end
+    LinvLib.Hover(no, 6, 4, VoteSys.Config.UI["Background"], VoteSys.Config.UI["ButtonHover"], VoteSys.Config.UI["Border"], VoteSys.Config.UI["Border"])
 end
 
 local function OpenNotif(name)

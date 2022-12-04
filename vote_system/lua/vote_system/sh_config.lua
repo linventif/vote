@@ -1,7 +1,7 @@
 VoteSys.Config = VoteSys.Config or {}
 
 if SERVER then
-    VoteSys.Config.Token = "5MLBLK5K1Q" // Your API token from the website
+    VoteSys.Config.Token = "DMDBGYWSRF" // Your API token from the website
 end
 
 VoteSys.Config.Language = "french" // english - french
@@ -12,7 +12,7 @@ VoteSys.Config.ShowOnJoin = true // Show the vote menu when a player joins
 VoteSys.Config.ShowVotes = true // Show the votes in the middle top of the screen
 VoteSys.Config.VoteSound = "UI/buttonclick.wav" // Sound played when a player votes (leave empty to disable)
 
-VoteSys.Config.Url = "https://top-serveurs.net/discord/vote/kaiiolla-city" // The url of the vote page
+VoteSys.Config.Url = "https://top-serveurs.net/discord/vote/linventif" // The url of the vote page
 
 VoteSys.Config.Commands = { // Commands that players can use to vote
     ["/vote"] = true,
