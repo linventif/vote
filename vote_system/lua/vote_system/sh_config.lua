@@ -12,6 +12,9 @@ VoteSys.Config.ShowOnJoin = true // Show the vote menu when a player joins
 VoteSys.Config.ShowVotes = true // Show the votes in the middle top of the screen
 VoteSys.Config.VoteSound = "UI/buttonclick.wav" // Sound played when a player votes (leave empty to disable)
 
+VoteSys.Config.VotePanel = true // Enable the vote panel (to encourage players to vote)
+VoteSys.Config.VotePanelPos = "right" // Position of the vote panel (left or right)
+
 VoteSys.Config.Url = "https://top-serveurs.net/discord/vote/linventif" // The url of the vote page
 
 VoteSys.Config.Commands = { // Commands that players can use to vote

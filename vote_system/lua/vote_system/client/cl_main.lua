@@ -11,6 +11,9 @@ if VoteSys.Config.Language == "french" then
         [9] = "Fermer",
         [10] = "Après avoir voté, cliquez sur Réclamer pour récupérer votre récompense !",
         [11] = " à voté pour le serveur est a reçu " .. LinvLib.MoneyToShow(" ", VoteSys.Config.Money) .. "€  GG",
+        [12] = "Votez",
+        [13] = "Recevez",
+        [14] = "€"
     }
 else
     VoteSys.Language = {
@@ -140,3 +143,13 @@ if VoteSys.Config.ShowOnJoin then
         end)
     end)
 end
+
+//  if VoteSys.Config.VotePanel then
+//      hook.Add("HUDPaint", "VotePanel", function()
+//          draw.RoundedBox(8, ScrW() - 200 - 40, ScrH() / 2 - 100, 200, 200, VoteSys.Config.UI["Border"])
+//          draw.RoundedBox(6, ScrW() - 196 - 40, ScrH() / 2 - 96, 192, 192, VoteSys.Config.UI["Background"])
+//          draw.SimpleText(VoteSys.Language[13], "LinvFontRobo30", ScrW() - 100 - 40, ScrH() / 2 - 25 - 30, VoteSys.Config.UI["TextColor"], TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+//          draw.SimpleText(LinvLib.MoneyToShow(" ", VoteSys.Config.Money) .. VoteSys.Language[14], "LinvFontRobo30", ScrW() - 100 - 40, ScrH() / 2 - 25 + 20, VoteSys.Config.UI["TextColor"], TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+//          draw.SimpleText(VoteSys.Language[12], "LinvFontRobo30", ScrW() - 100 - 40, ScrH() / 2 - 25 + 80, VoteSys.Config.UI["TextColor"], TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+//      end)
+//  end
