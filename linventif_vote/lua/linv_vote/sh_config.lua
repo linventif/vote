@@ -5,12 +5,14 @@
 // -- // -- // -- // -- // -- // -- // -- //
 
 // General Settings
-LinvVote.Config.ForceLanguage = true // Force to use the sh_language.lua file
+LinvVote.Config.ForceLanguage = false // Force to use the sh_language.lua file
 LinvVote.Config.Url = "https://top-serveurs.net/discord/vote/linventif" // The url of the vote page
+LinvVote.Config.Token = "DMDBGYWSRF" // Your API token of your server (top-serveurs.net -> Your Servers -> Web API)
 
 // Vote Settings
 LinvVote.Config.Money = 25000 // How much money the player gets when he votes
-LinvVote.Config.RefreshTime = 3 // Refresh time in minutes
+LinvVote.Config.RefreshTime = 10 // Refresh time in seconds to check if the player has voted
+LinvVote.Config.Cooldown = 120 // Cooldown in minutes between each vote
 
 LinvVote.Config.ShowOnJoin = true // Show the vote menu when a player joins
 LinvVote.Config.ShowVotes = true // Show the votes in the chat

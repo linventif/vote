@@ -1,4 +1,4 @@
-if !LinvLib || LinvLib.Info.version < "0.2.7" then
+if !LinvLib || LinvLib.Info.version < "0.2.8" then
     print(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
     print(" -                                                                                         - ")
     print(" -                      Linventif Library is outdated or not installed.                    - ")

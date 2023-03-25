@@ -11,9 +11,33 @@ local lang = {
     ["thanks_info3"] = "Vous pouvez voter toutes les 2 heures.",
     ["claim"] = "Récupérer",
     ["vote"] = "VOTEZ",
-    ["linv_vote"] = " Linventif Vote | ",
+    ["linv_vote"] = "Linventif Vote | ",
     ["ply_vote"] = "{1} à soutenu le serveur en votant est a reçu {2} !", // {1} : player name - {2} : reward amount
-    ["reward_received"] = "Vous avez reçu {1} pour avoir voté !", // {1} : reward amount
+    ["reward_received"] = "Merci de soutenir le serveur, vous avez recu {1}.", // {1} : reward amount
+    ["already_vote"] = "Vous avez déjà voté récemment !",
+    ["can_revote_in"] = "Vous pourrez re-voter à {1}h{2} !", // {1} : hours - {2} : minutes
+    ["already_in_list"] = "Vous êtes déja dans la liste d'attente.",
+    ["added_to_list"] = "Vous avez étais ajouté a la liste d'attente, vous recevrez votre récompense dans maximum {1} minutes.", // {1} : minutes
+    ["linvvote"] = "Linventif Vote",
+    ["reward_money"] = "Récompense en argent",
+    ["url"] = "URL de vote",
+    ["url_desc"] = "L'url vers votre server, sur vote-serveur.",
+    ["token"] = "Token de vote",
+    ["token_desc"] = "top-serveurs.net -> Your Servers -> Web API",
+    ["refresh_time"] = "Temps de rafraichissement",
+    ["cooldown"] = "Cooldown entre chaque vote",
+    ["cooldown_desc"] = "temps en minutes",
+    ["commands"] = "Commandes de vote",
+    ["reward_money_desc"] = "Montant de la récompense",
+    ["refresh_time_desc"] = "Temps de rafrechisement en seconde",
+    ["npc_model"] = "Modèle du NPC",
+    ["npc_name"] = "Nom du NPC",
+    ["height"] = "Hauteur du NPC",
+    ["show_votes_panel"] = "Afficher le panneau de vote",
+    ["remove_in_vehicle"] = "Enlever le panneau en véhicule",
+    ["show_on_join"] = "Afficher le panneau au join",
+    ["show_votes"] = "Afficher les votes dans le chat",
+    ["npc_height"] = "Hauteur du NPC",
 }
 
 // -- // -- // -- // -- // -- // -- // -- //
