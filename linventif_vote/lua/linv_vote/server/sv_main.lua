@@ -1,3 +1,11 @@
+if file.Exists("linventif/linventif_stuff/linvvote_settings.json", "DATA") then
+    local data = util.JSONToTable(file.Read("linventif/linventif_stuff/linvvote_settings.json", "DATA"))
+    if data.version < "0.2.0" then
+        file.Delete("linventif/linventif_stuff/linvvote_settings.json")
+    end
+end
+
+
 // Net Init
 util.AddNetworkString("LinvVote")
 
@@ -16,6 +24,23 @@ util.AddNetworkString("LinvVote")
 
 // SQL
 sql.Query("CREATE TABLE IF NOT EXISTS linvvote_cooldown (steamid TEXT PRIMARY KEY, date TEXT DEFAULT CURRENT_TIMESTAMP)")
+
+// ConCommands
+
+concommand.Add("linvvote_cooldown_clear", function(ply, cmd, args)
+    if ply:IsValid() then return end
+    sql.Query("DELETE FROM linvvote_cooldown")
+    print("[LinvVote] Cooldown table cleared")
+end)
+
+concommand.Add("linvvote_cooldown_list", function(ply, cmd, args)
+    if ply:IsValid() then return end
+    local plys_in_cool = sql.Query("SELECT * FROM linvvote_cooldown")
+    if !plys_in_cool || table.IsEmpty(plys_in_cool) then print("[LinvVote] No player in cooldown") return end
+    for _, ply in pairs(plys_in_cool) do
+        print("[LinvVote] " .. ply.steamid .. " - " .. ply.date)
+    end
+end)
 
 // Vars
 local ply_to_check = {}
