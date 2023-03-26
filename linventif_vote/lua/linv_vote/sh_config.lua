@@ -4,6 +4,8 @@
 // If you have any problem with this addon please contact me on discord : https://linv.dev/discord
 // -- // -- // -- // -- // -- // -- // -- //
 
+LinvVote.Config.UseInGameConfig = true // Use the in-game configuration (!monitor) or use this file
+
 // General Settings
 LinvVote.Config.ForceLanguage = false // Force to use the sh_language.lua file
 LinvVote.Config.Url = "https://top-serveurs.net/discord/vote/linventif" // The url of the vote page
@@ -11,7 +13,7 @@ LinvVote.Config.Token = "DMDBGYWSRF" // Your API token of your server (top-serve
 
 // Vote Settings
 LinvVote.Config.Money = 25000 // How much money the player gets when he votes
-LinvVote.Config.RefreshTime = 60 // Refresh time in seconds to check if the player has voted
+LinvVote.Config.RefreshTime = 120 // Refresh time in seconds to check if the player has voted
 LinvVote.Config.Cooldown = 120 // Cooldown in minutes between each vote
 
 LinvVote.Config.ShowOnJoin = true // Show the vote menu when a player joins

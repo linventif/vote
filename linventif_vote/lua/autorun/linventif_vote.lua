@@ -13,7 +13,7 @@ end
 local folder = "linv_vote"
 local name = "Linventif Vote"
 local license = "CC BY-NC-SA 4.0"
-local version = "0.2.0"
+local version = "0.2.2"
 
 LinvVote = {
     ["Config"] = {},

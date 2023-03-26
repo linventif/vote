@@ -121,6 +121,7 @@ end)
 
 // Initialize
 hook.Add("Initialize", "LinvVote:LoadSettings", function()
+    if !LinvVote.Config.UseInGameConfig then return end
     LinvVote.Config = LinvLib:LoadSettings("linvvote_settings", LinvVote.Config, LinvVote.Info.version, "LinvVote")
 end)
 
@@ -132,7 +133,7 @@ hook.Add("LinvLib:AddSettings", "LinvVote:AddSettings", function()
         LinvVote.Config.Url = net.ReadString()
     end)
     LinvLib:MonitorAddSettings("LinvVote:RewardMoney", function()
-        LinvVote.Config.RewardMoney = net.ReadInt(32)
+        LinvVote.Config.Money = net.ReadInt(32)
     end)
     LinvLib:MonitorAddSettings("LinvVote:NpcName", function()
         LinvVote.Config.NPC_Name = net.ReadString()
