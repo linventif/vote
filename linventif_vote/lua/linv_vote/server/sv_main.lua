@@ -11,6 +11,7 @@ util.AddNetworkString("LinvVote")
 // Net ID
 /*
     Net Send
+    ID 0 = Get Settings
     ID 1 = Show Vote Panel
     ID 2 = Remove Vote Panel
     ID 3 = Send alert message to all players
@@ -18,7 +19,9 @@ util.AddNetworkString("LinvVote")
     ID 5 = Send chat message to player
 
     Net Receive
+    ID 0 = Get Settings
     ID 1 = Add Player to Check Table
+
 */
 
 // SQL
@@ -37,6 +40,12 @@ end
 
 // Functions Table
 local netFunc = {
+    [0] = function(ply)
+        net.Start("LinvVote")
+            net.WriteUInt(0, 8)
+            net.WriteString(util.TableToJSON(LinvVote.Config))
+        net.Send(ply)
+    end,
     [1] = function(ply)
         // Check if player is in cooldown
         local date_last_vote = sql.QueryValue("SELECT date FROM linvvote_cooldown WHERE steamid = '" .. ply:SteamID64() .. "'")
@@ -94,11 +103,12 @@ hook.Add("PlayerLeaveVehicle", "LinvVote:PlayerLeaveVehicle", function(ply, vehi
     net.Send(ply)
 end)
 
-// Initialize
 hook.Add("Initialize", "LinvVote:LoadSettings", function()
     if !LinvVote.Config.UseInGameConfig then return end
     LinvVote.Config = LinvLib:LoadSettings("linvvote_settings", LinvVote.Config, LinvVote.Info.version, "LinvVote")
 end)
+
+// Linventif Stuff Monitor
 
 hook.Add("LinvLib:AddSettings", "LinvVote:AddSettings", function()
     LinvLib:MonitorAddSettings("LinvVote:Token", function()
@@ -140,4 +150,8 @@ hook.Add("LinvLib:AddSettings", "LinvVote:AddSettings", function()
     LinvLib:MonitorAddSettings("LinvVote:SaveSettings", function()
         LinvLib:SaveSettings("linvvote_settings", LinvVote.Config, LinvVote.Info.version, "LinvVote")
     end)
+end)
+
+hook.Add("LinvVote:SendSettings", "LinvVote:SendSettings", function()
+    LinvLib.SendAddonSettings("LinvVote", LinvVote.Config)
 end)

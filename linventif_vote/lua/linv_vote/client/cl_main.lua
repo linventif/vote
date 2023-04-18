@@ -96,6 +96,10 @@ hook.Add("OnPlayerChat", "Vote", function(ply, text, team)
     end
 end)
 
+hook.Add("InitPostEntity", "LinvVote:GetSettings", function()
+    hook.Call("LinvLib:GetAddonSettings", nil, "LinvVote")
+end)
+
 hook.Add("LinvLib:LoadSetting", "LinvVote:LoadSetting", function(addon, setting)
     if addon == "LinvVote" then
         LinvVote.Config = setting
@@ -265,17 +269,6 @@ hook.Add("LinvLib:AddSettings", "LinvVote:AddSettings", function()
                 ["name"] = LinvVote:GetTrad("remove_in_vehicle")
             },
             [11] = {
-                ["checkbox"] = true,
-                ["state"] = LinvVote.Config.ShowOnJoin,
-                ["icon"] = LinvLib.Materials["valid"],
-                ["save_setting"] = {
-                    ["name"] = "LinvVote:ShowOnJoin",
-                    ["type"] = "boolean",
-                    ["value"] = !LinvVote.Config.ShowOnJoin
-                },
-                ["name"] = LinvVote:GetTrad("show_on_join")
-            },
-            [12] = {
                 ["checkbox"] = true,
                 ["state"] = LinvVote.Config.ShowVotes,
                 ["icon"] = LinvLib.Materials["valid"],
