@@ -13,13 +13,12 @@ LinvVote.Config.Token = "DMDBGYWSRF" // Your API token of your server (top-serve
 
 // Vote Settings
 LinvVote.Config.Money = 25000 // How much money the player gets when he votes
-LinvVote.Config.RefreshTime = 120 // Refresh time in seconds to check if the player has voted
 LinvVote.Config.Cooldown = 120 // Cooldown in minutes between each vote
-
-LinvVote.Config.ShowOnJoin = true // Show the vote menu when a player joins
 LinvVote.Config.ShowVotes = true // Show the votes in the chat
 
 LinvVote.Config.ShowVotesPanel = true // Show the left panel to insite the player to vote
+LinvVote.Config.PanelPosW = "right" // The position of the panel (left - center - right)
+LinvVote.Config.PanelPosH = "top" // The position of the panel (top - center - bottom)
 LinvVote.Config.RemoveInVehicle = true // Remove the panel when the player is in a vehicle
 
 LinvVote.Config.Commands = { // Commands that players can use to open the vote menu

@@ -3,43 +3,30 @@ local function AddChatMsg(msg)
     chat.AddText(Color(45, 160, 180),  LinvVote:GetTrad("linv_vote"), LinvLib:GetColorTheme("text"), msg)
 end
 
-local function thanksMenu()
-    local frame = LinvLib:Frame(600, 240)
-    frame:DockMargin(0, 0, 0, 0)
-    frame:DockPadding(LinvLib:RespW(30), LinvLib:RespH(20), LinvLib:RespW(30), LinvLib:RespH(30))
-
-    local title = LinvLib:LabelPanel(frame, LinvVote:GetTrad("thanks"), "LinvFontRobo25", 500, 40)
-    title:Dock(TOP)
-    title:DockMargin(0, 0, 0, LinvLib:RespH(20))
-
-    LinvLib:CloseButton(frame, 36, 36, LinvLib:RespW(600 - 60), LinvLib:RespH(20), function()
-        frame:Close()
-    end)
-
-    local panel = LinvLib:Panel(frame, 500, 200)
-    panel:Dock(FILL)
-    panel:DockMargin(0, 0, 0, LinvLib:RespH(15))
-
-    local info1 = LinvLib:LabelPanel(panel, LinvVote:GetTrad("thanks_info1"), "LinvFontRobo20", 500, 30)
-    info1:Dock(TOP)
-    info1:DockMargin(0, 0, 0, LinvLib:RespH(15))
-
-    local info2 = LinvLib:LabelPanel(panel, LinvVote:GetTrad("thanks_info2", {LinvLib:MoneyFormat(LinvVote.Config.Money)}), "LinvFontRobo20", 500, 30)
-    info2:Dock(TOP)
-    info2:DockMargin(0, 0, 0, LinvLib:RespH(15))
-
-    local info3 = LinvLib:LabelPanel(panel, LinvVote:GetTrad("thanks_info3"), "LinvFontRobo20", 500, 30)
-    info3:Dock(TOP)
-    info3:DockMargin(0, 0, 0, LinvLib:RespH(15))
-end
-
 local function voteMenu()
     LinvLib:WebPage(LinvVote.Config.Url .. "?pseudo=" .. LocalPlayer():Nick(), {["on_close"] = function()
         net.Start("LinvVote")
             net.WriteUInt(1, 8)
         net.SendToServer()
-        thanksMenu()
     end})
+end
+
+local function GetPosPanel(id)
+    local pos = {
+        ["w"] = {
+            ["value"] = LinvVote.Config.PanelPosW,
+            ["left"] = 30,
+            ["center"] = 1920 / 2 - 200 / 2,
+            ["right"] = 1920 - 30 - 200
+        },
+        ["h"] = {
+            ["value"] = LinvVote.Config.PanelPosH,
+            ["top"] = 30,
+            ["center"] = 1080 / 2 - 180 / 2,
+            ["bottom"] = 1080 - 30 - 180
+        }
+    }
+    return pos[id][pos[id]["value"]]
 end
 
 local function votePanel()
@@ -50,7 +37,7 @@ local function votePanel()
     local frame = LinvLib:Frame(200, 180, {["no_popup"] = true})
     frame:DockMargin(0, 0, 0, 0)
     frame:DockPadding(LinvLib:RespW(30), LinvLib:RespH(20), LinvLib:RespW(30), LinvLib:RespH(30))
-    frame:SetPos(LinvLib:RespW(1920 - 200 - 30), LinvLib:RespH(1080 / 2 - 300 / 2))
+    frame:SetPos(LinvLib:RespW(GetPosPanel("w")), LinvLib:RespH(GetPosPanel("h")))
 
     local title = LinvLib:LabelPanel(frame, LinvVote:GetTrad("claim"), "LinvFontRobo25", 200, 20)
     title:Dock(TOP)
@@ -109,13 +96,11 @@ hook.Add("OnPlayerChat", "Vote", function(ply, text, team)
     end
 end)
 
-hook.Add("InitPostEntity", "LinvLib:VotePanel", function()
-    if LinvVote.Config.ShowOnJoin then votePanel() end
-end)
-
 hook.Add("LinvLib:LoadSetting", "LinvVote:LoadSetting", function(addon, setting)
     if addon == "LinvVote" then
         LinvVote.Config = setting
+        hook.Call("LinvVote:RemoveVotePanel")
+        if !LocalPlayer():InVehicle() then votePanel() end
     end
 end)
 
@@ -216,32 +201,46 @@ hook.Add("LinvLib:AddSettings", "LinvVote:AddSettings", function()
             [7] = {
                 ["icon"] = LinvLib.Materials["edit"],
                 ["function"] = function()
-                    LinvLib:NumberPanel(LinvVote:GetTrad("refresh_time"), LinvVote.Config.RefreshTime, 0, 10000000, function(value)
-                        LinvVote.Config.RefreshTime = value
-                        net.Start("LinvLib:SaveSetting")
-                            net.WriteString("LinvVote:RefreshTime")
-                            net.WriteInt(LinvVote.Config.RefreshTime, 32)
-                        net.SendToServer()
-                    end, function()
-                        RunConsoleCommand("linvlib_settings")
-                    end, LinvVote:GetTrad("refresh_time_desc"))
+                    local data = {
+                        ["data"] = {
+                            "right",
+                            "center",
+                            "left",
+                        },
+                        ["callback"] = function(value)
+                            LinvVote.Config.PanelPosW = value
+                            net.Start("LinvLib:SaveSetting")
+                                net.WriteString("LinvVote:PanelPosW")
+                                net.WriteString(LinvVote.Config.PanelPosW)
+                            net.SendToServer()
+                        end,
+                        ["title"] = LinvVote:GetTrad("panel_pos_w")
+                    }
+                    LinvLib.SelectMenu(data)
                 end,
-                ["name"] = LinvVote:GetTrad("refresh_time")
+                ["name"] = LinvVote:GetTrad("panel_pos_w")
             },
             [8] = {
                 ["icon"] = LinvLib.Materials["edit"],
                 ["function"] = function()
-                    LinvLib:NumberPanel(LinvVote:GetTrad("cooldown"), LinvVote.Config.Cooldown, 0, 10000000, function(value)
-                        LinvVote.Config.Cooldown = value
-                        net.Start("LinvLib:SaveSetting")
-                            net.WriteString("LinvVote:Cooldown")
-                            net.WriteInt(LinvVote.Config.Cooldown, 32)
-                        net.SendToServer()
-                    end, function()
-                        RunConsoleCommand("linvlib_settings")
-                    end, LinvVote:GetTrad("cooldown_desc"))
+                    local data = {
+                        ["data"] = {
+                            "top",
+                            "center",
+                            "bottom",
+                        },
+                        ["callback"] = function(value)
+                            LinvVote.Config.PanelPosH = value
+                            net.Start("LinvLib:SaveSetting")
+                                net.WriteString("LinvVote:PanelPosH")
+                                net.WriteString(LinvVote.Config.PanelPosH)
+                            net.SendToServer()
+                        end,
+                        ["title"] = LinvVote:GetTrad("panel_pos_h")
+                    }
+                    LinvLib.SelectMenu(data)
                 end,
-                ["name"] = LinvVote:GetTrad("cooldown")
+                ["name"] = LinvVote:GetTrad("panel_pos_h")
             },
             [9] = {
                 ["checkbox"] = true,

@@ -5,7 +5,6 @@ if file.Exists("linventif/linventif_stuff/linvvote_settings.json", "DATA") then
     end
 end
 
-
 // Net Init
 util.AddNetworkString("LinvVote")
 
@@ -25,26 +24,6 @@ util.AddNetworkString("LinvVote")
 // SQL
 sql.Query("CREATE TABLE IF NOT EXISTS linvvote_cooldown (steamid TEXT PRIMARY KEY, date TEXT DEFAULT CURRENT_TIMESTAMP)")
 
-// ConCommands
-
-concommand.Add("linvvote_cooldown_clear", function(ply, cmd, args)
-    if ply:IsValid() then return end
-    sql.Query("DELETE FROM linvvote_cooldown")
-    print("[LinvVote] Cooldown table cleared")
-end)
-
-concommand.Add("linvvote_cooldown_list", function(ply, cmd, args)
-    if ply:IsValid() then return end
-    local plys_in_cool = sql.Query("SELECT * FROM linvvote_cooldown")
-    if !plys_in_cool || table.IsEmpty(plys_in_cool) then print("[LinvVote] No player in cooldown") return end
-    for _, ply in pairs(plys_in_cool) do
-        print("[LinvVote] " .. ply.steamid .. " - " .. ply.date)
-    end
-end)
-
-// Vars
-local ply_to_check = {}
-
 // Functions
 local function SendChatMessage(ply, id_msg, args)
     net.Start("LinvVote")
@@ -56,47 +35,43 @@ local function SendChatMessage(ply, id_msg, args)
     net.Send(ply)
 end
 
+// Functions Table
+local netFunc = {
+    [1] = function(ply)
+        // Check if player is in cooldown
+        local date_last_vote = sql.QueryValue("SELECT date FROM linvvote_cooldown WHERE steamid = '" .. ply:SteamID64() .. "'")
+        local time_left = LinvVote.Config.Cooldown * 60 - LinvLib.timeDifference(date_last_vote, os.date("%Y-%m-%d %H:%M:%S"))
+        if date_last_vote then
+            SendChatMessage(ply, 2)
+            SendChatMessage(ply, 3, {os.date("%H", time_left), os.date("%M", time_left)})
+            return
+        end
+        // Check if player has vote
+        http.Fetch("https://api.top-serveurs.net/v1/votes/check?server_token=" .. LinvVote.Config.Token .. "&playername=" .. ply:Nick(), function(body, length, headers, code)
+            if code != 200 then return end
+            local data = util.JSONToTable(body)
+            sql.Query("INSERT INTO linvvote_cooldown (steamid) VALUES ('" .. ply:SteamID64() .. "') ON CONFLICT(steamid) DO UPDATE SET date = CURRENT_TIMESTAMP")
+            ply:addMoney(LinvVote.Config.Money)
+            // Send alert message to all players
+            if LinvVote.Config.ShowVotes then
+                net.Start("LinvVote")
+                    net.WriteUInt(3, 8)
+                    net.WriteString(ply:Nick())
+                net.Broadcast()
+            end
+        end)
+    end
+}
+
 // Net Receive
 net.Receive("LinvVote", function(len, ply)
     local id = net.ReadUInt(8)
-    if id == 1 then
-        local date_last_vote = sql.QueryValue("SELECT date FROM linvvote_cooldown WHERE steamid = '" .. ply:SteamID64() .. "'")
-        if ply_to_check[ply] then
-            SendChatMessage(ply, 1)
-            return
-        elseif date_last_vote then
-            SendChatMessage(ply, 2)
-            SendChatMessage(ply, 3, {(tonumber(string.sub(date_last_vote, 12, 13))+2)%23, string.sub(date_last_vote, 15, 16)})
-            return
-        end
-        ply_to_check[ply] = true
-        SendChatMessage(ply, 4, {math.Round(LinvVote.Config.RefreshTime / 60)})
-    end
+    if !netFunc[id] then return end
+    netFunc[id](ply)
 end)
 
 // Timer
-timer.Create("LinvVote:RefreshVoteList", LinvVote.Config.RefreshTime, 0, function()
-    if !ply_to_check || table.IsEmpty(ply_to_check) then return end
-    for ply, _ in pairs(ply_to_check) do
-        if !IsValid(ply) then ply_to_check[ply] = nil continue end
-        http.Fetch("https://api.top-serveurs.net/v1/votes/check?server_token=" .. LinvVote.Config.Token .. "&playername=" .. ply:Nick(), function(body)
-            local data = util.JSONToTable(body)
-            if data.code == 200 then
-                sql.Query("INSERT INTO linvvote_cooldown (steamid) VALUES ('" .. ply:SteamID64() .. "') ON CONFLICT(steamid) DO UPDATE SET date = CURRENT_TIMESTAMP")
-                ply:addMoney(LinvVote.Config.Money)
-                if LinvVote.Config.ShowVotes then
-                    net.Start("LinvVote")
-                        net.WriteUInt(3, 8) // ID 3 = Send alert message to all players
-                        net.WriteString(ply:Nick())
-                    net.Broadcast()
-                end
-            end
-        end)
-        ply_to_check[ply] = nil
-    end
-end)
-
-timer.Create("LinvVote:ClearSQLPlayer", 30, 0, function()
+timer.Create("LinvVote:ClearSQLPlayer", 60, 0, function()
     local plys_not_in_cool = sql.Query("SELECT * FROM linvvote_cooldown WHERE date < datetime('now', '-" .. LinvVote.Config.Cooldown .. " minutes')")
     if !plys_not_in_cool || table.IsEmpty(plys_not_in_cool) then return end
     for _, ply in pairs(plys_not_in_cool) do
@@ -138,17 +113,17 @@ hook.Add("LinvLib:AddSettings", "LinvVote:AddSettings", function()
     LinvLib:MonitorAddSettings("LinvVote:NpcName", function()
         LinvVote.Config.NPC_Name = net.ReadString()
     end)
+    LinvLib:MonitorAddSettings("LinvVote:PanelPosW", function()
+        LinvVote.Config.PanelPosW = net.ReadString()
+    end)
+    LinvLib:MonitorAddSettings("LinvVote:PanelPosH", function()
+        LinvVote.Config.PanelPosH = net.ReadString()
+    end)
     LinvLib:MonitorAddSettings("LinvVote:NpcModel", function()
         LinvVote.Config.NPC_Model = net.ReadString()
     end)
     LinvLib:MonitorAddSettings("LinvVote:NpcHeight", function()
         LinvVote.Config.NPC_Height = net.ReadInt(32)
-    end)
-    LinvLib:MonitorAddSettings("LinvVote:RefreshTime", function()
-        LinvVote.Config.RefreshTime = net.ReadInt(32)
-    end)
-    LinvLib:MonitorAddSettings("LinvVote:Cooldown", function()
-        LinvVote.Config.Cooldown = net.ReadInt(32)
     end)
     LinvLib:MonitorAddSettings("LinvVote:ShowVotesPanel", function()
         LinvVote.Config.ShowVotesPanel = net.ReadBool()

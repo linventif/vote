@@ -15,7 +15,7 @@ local lang = {
     ["ply_vote"] = "{1} à soutenu le serveur en votant est a reçu {2} !", // {1} : player name - {2} : reward amount
     ["reward_received"] = "Merci de soutenir le serveur, vous avez recu {1}.", // {1} : reward amount
     ["already_vote"] = "Vous avez déjà voté récemment !",
-    ["can_revote_in"] = "Vous pourrez re-voter à {1}h{2} !", // {1} : hours - {2} : minutes
+    ["can_revote_in"] = "Vous pourrez re-voter dans {1}h{2} !", // {1} : hours - {2} : minutes
     ["already_in_list"] = "Vous êtes déja dans la liste d'attente.",
     ["added_to_list"] = "Vous avez étais ajouté a la liste d'attente, vous recevrez votre récompense dans maximum {1} minutes.", // {1} : minutes
     ["linvvote"] = "Linventif Vote",
@@ -38,6 +38,8 @@ local lang = {
     ["show_on_join"] = "Afficher le panneau au join",
     ["show_votes"] = "Afficher les votes dans le chat",
     ["npc_height"] = "Hauteur du NPC",
+    ["panel_pos_w"] = "Position X du panel",
+    ["panel_pos_h"] = "Position Y du panel",
 }
 
 // -- // -- // -- // -- // -- // -- // -- //
