@@ -11,7 +11,6 @@ util.AddNetworkString("LinvVote")
 // Net ID
 /*
     Net Send
-    ID 0 = Get Settings
     ID 1 = Show Vote Panel
     ID 2 = Remove Vote Panel
     ID 3 = Send alert message to all players
@@ -19,7 +18,6 @@ util.AddNetworkString("LinvVote")
     ID 5 = Send chat message to player
 
     Net Receive
-    ID 0 = Get Settings
     ID 1 = Add Player to Check Table
 
 */
@@ -40,17 +38,11 @@ end
 
 // Functions Table
 local netFunc = {
-    [0] = function(ply)
-        net.Start("LinvVote")
-            net.WriteUInt(0, 8)
-            net.WriteString(util.TableToJSON(LinvVote.Config))
-        net.Send(ply)
-    end,
     [1] = function(ply)
         // Check if player is in cooldown
         local date_last_vote = sql.QueryValue("SELECT date FROM linvvote_cooldown WHERE steamid = '" .. ply:SteamID64() .. "'")
-        local time_left = LinvVote.Config.Cooldown * 60 - LinvLib.timeDifference(date_last_vote, os.date("%Y-%m-%d %H:%M:%S"))
         if date_last_vote then
+            local time_left = LinvVote.Config.Cooldown * 60 - LinvLib.timeDifference(date_last_vote, os.date("%Y-%m-%d %H:%M:%S"))
             SendChatMessage(ply, 2)
             SendChatMessage(ply, 3, {os.date("%H", time_left), os.date("%M", time_left)})
             return
