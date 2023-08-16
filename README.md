@@ -1,5 +1,7 @@
 # License
-### License : Free
+
+## License : Free
+
 Shield: [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
 
 This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa].
@@ -11,10 +13,13 @@ This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 Inter
 [cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
 
 ### License : Commercial
+
 Contact me on Disord :) Join my discord and send me a private message.
 
-# Support
+## Support
+
 Need Help ? Join my discord and create a post in support.
 
-# Support me and join my Discord
+## Support me and join my Discord
+
 [![https://linventif.fr](https://i.imgur.com/UNSqmvK.png)](https://linventif.fr/discord)
